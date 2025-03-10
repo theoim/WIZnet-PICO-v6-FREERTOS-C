@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 3.12)
 # Set board
 # set(BOARD_NAME W6100_EVB_PICO)
 # set(BOARD_NAME W6100_EVB_PICO2)
-# set(BOARD_NAME W6300_EVB_PICO)
 set(BOARD_NAME W6300_EVB_PICO2)
 
 # Set ethernet chip
@@ -16,10 +15,6 @@ elseif(${BOARD_NAME} STREQUAL W6100_EVB_PICO2)
     set(PICO_PLATFORM rp2350)
     set(WIZNET_CHIP W6100)
     add_definitions(-D_WIZCHIP_=W6100)
-
-elseif(${BOARD_NAME} STREQUAL W6300_EVB_PICO)
-    set(WIZNET_CHIP W6300)
-    add_definitions(-D_WIZCHIP_=W6300)
 
 elseif(${BOARD_NAME} STREQUAL W6300_EVB_PICO2)
     set(PICO_PLATFORM rp2350)
