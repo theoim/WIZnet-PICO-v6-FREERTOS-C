@@ -22,7 +22,7 @@ target_include_directories(ETHERNET_FILES INTERFACE
         ${WIZNET_DIR}/Ethernet/W6300
         )
         
-target_link_libraries(ETHERNET_FILES INTERFACE
+target_link_libraries(ETHERNET_FILES PUBLIC
         W6300_FILES
         )
 endif()
@@ -42,9 +42,9 @@ target_link_libraries(W6100_FILES PRIVATE
         ETHERNET_FILES
         )
 
-add_library(W6300_FILES INTERFACE)
+add_library(W6300_FILES STATIC)
 
-target_sources(W6300_FILES INTERFACE
+target_sources(W6300_FILES PUBLIC
         ${WIZNET_DIR}/Ethernet/W6300/w6300.c
         )
 
@@ -53,7 +53,7 @@ target_include_directories(W6300_FILES INTERFACE
         ${WIZNET_DIR}/Ethernet/W6300
         )
 
-target_link_libraries(W6300_FILES INTERFACE
+target_link_libraries(W6300_FILES PRIVATE
         ETHERNET_FILES
         )
 
@@ -78,7 +78,6 @@ target_sources(DHCP4_FILES PUBLIC
 
 target_include_directories(DHCP4_FILES PUBLIC
         ${WIZNET_DIR}/Ethernet
-        ${WIZNET_DIR}/Ethernet/W6100
         ${WIZNET_DIR}/Internet/DHCP4
         )
 
@@ -91,12 +90,7 @@ target_sources(DHCP6_FILES PUBLIC
 
 target_include_directories(DHCP6_FILES PUBLIC
         ${WIZNET_DIR}/Ethernet
-        ${WIZNET_DIR}/Ethernet/W6100
         ${WIZNET_DIR}/Internet/DHCP6
-        )
-
-target_link_libraries(ETHERNET_FILES PUBLIC
-        W6100_FILES
         )
 
 # DNS
@@ -108,10 +102,5 @@ target_sources(DNS_FILES PUBLIC
 
 target_include_directories(DNS_FILES PUBLIC
         ${WIZNET_DIR}/Ethernet
-        ${WIZNET_DIR}/Ethernet/W6100
         ${WIZNET_DIR}/Internet/DNS
-        )
-
-target_link_libraries(ETHERNET_FILES PUBLIC
-        W6100_FILES
         )
