@@ -1,95 +1,79 @@
-# RP2040, RP2350 & W6x00 Ethernet Examples
+# W6100-EVB-PICO, W6100-EVB-PICO2 and W6300-EVB-PICO2 FreeRTOS Project
 
-- [**Overview**](#overview)
-- [**Getting Started**](#getting_started)
-- [**Directory Structure**](#directory_structure)
-- [**Appendix**](#appendix)
-    - [**Other Examples**](#other_examples)
+This project is a simple example of OpenSSL communication using the **W6100-EVB-PICO**, **W6100-EVB-PICO2** and **W6300-EVB-PICO2** board, which combines the **RP2040** & **RP2350** microcontroller and the **W6100** & **W6300** chip from WIZnet.  
+The implementation is based on **Pico-SDK, FreeRTOS, MbedTLS, and io6Library** for WIZnet communication.
 
+This example demonstrates how to establish secure communication over Ethernet using OpenSSL and the W6300 chip.  
+By following the instructions below, you can successfully build and run this project on your W6300-EVB-PICO2 board.
 
+---
 
-<a name="overview"></a>
-## Overview
+## 📌 **Key Features**
+- **Microcontroller:** RP2040 (ARM Cortex-M0), RP2350 (ARM Cortex-M33)  
+- **Ethernet Chip:** W6100, W6300 (WIZnet)  
+- **RTOS:** FreeRTOS  
+- **Libraries Used:**
+  - **Pico-SDK:** RP2350 SDK for peripheral and hardware control.  
+  - **FreeRTOS:** Real-Time Operating System for task management.  
+  - **MbedTLS:** For secure communication (SSL/TLS).  
+  - **io6Library:** For WIZnet Ethernet communication.  
+- **Example Functionality:** Simple OpenSSL communication over Ethernet.  
 
-The RP2040, RP2350 & W6x00 ethernet examples use **W6100-EVB-Pico** and **W6100-EVB-PICO2** - ethernet I/O modules built on [**RP2040**][link-rp2040], [**RP2350**][link-rp2350] and WIZnet's [**W6100**][link-w6100] ethernet chip.
+---
 
-- [**W6100-EVB-Pico**][link-w6100-evb-pico]
+## ⚠️ **Important Notice for Building the Project**
+To successfully build the project, you need to modify a line in the `port.c` file of the FreeRTOS Kernel:
 
-![][link-w6100-evb-pico_main]
+- **File:** `WIZnet-PICO-v6-FREERTOS-C\libraries\FreeRTOS-Kernel\portable\ThirdParty\GCC\RP2040\port.c`  
+- **Line:** **414**  
+- **Original Code:**
+  ```c
+  uint32_t irq_num = SIO_IRQ_PROC0 + get_core_num();
+  ```
+- **Modified Code:**
+  ```c
+  uint32_t irq_num = 15 + get_core_num();
+  ```
+- **Reason:** This modification is required for compatibility with the RP2350 architecture to ensure successful compilation.
 
-- [**W6100-EVB-Pico2**][link-w6100-evb-pico2]
+---
 
-![][link-w6100-evb-pico2_main]
+## 📦 **Requirements**
+- **Hardware:**
+  - W6300-EVB-PICO2 board.  
+  - Ethernet connection.  
 
+- **Software:**
+  - Pico-SDK  
+  - FreeRTOS  
+  - MbedTLS  
+  - io6Library  
 
+---
 
-<a name="getting_started"></a>
-## Getting Started
+## 🔄 **How to Build and Run**
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   ```
 
-Please refer to [**Getting Started**][link-getting_started] for how to configure development environment or examples usage.
+2. **Apply the modification mentioned above to `port.c`.**
 
-# Setup board
+3. **Build the project using CMake:**
+   ```bash
+   mkdir build
+   cd build
+   cmake ..
+   make
+   ```
 
-1. Setup the board in '**CMakeLists.txt**' in '**WIZnet-PICO-v6-C/**' directory according to the evaluation board to be used referring to the following.
+4. **Upload the firmware to the W6300-EVB-PICO2 board.**
 
-- W6100-EVB-Pico
-- W6100-EVB-Pico2
+---
 
-2. For example, when using W6100-EVB-Pico :
+## 📧 **Contact**
+For any issues or inquiries, please open an issue on GitHub.
 
-```cpp
-# Set board
-set(BOARD_NAME W6100_EVB_PICO)
-```
-
-When using W6100-EVB-Pico2 :
-
-```cpp
-# Set board
-set(BOARD_NAME W6100_EVB_PICO2)
-```
-
-
-
-<a name="directory_structure"></a>
-## Directory Structure
-
-```
-WIZnet-PICO-v6-C
-┣ examples
-┃   ┣ AddressAutoConfiguration
-┃   ┗ loopback
-┣ libraries
-┃   ┣ io6Library
-┃   ┣ mbedtls
-┃   ┗ pico-sdk
-┣ port
-┃   ┣ io6Library
-┃   ┣ mbedtls
-┃   ┗ timer
-┗ static
-    ┣ documents
-    ┗ images
-```
-
-
-
-<a name="appendix"></a>
-## Appendix
-
+---
 
 
-
-
-<!--
-Link
--->
-
-[link-rp2040]: https://www.raspberrypi.org/products/rp2040/
-[link-rp2350]: https://www.raspberrypi.org/products/rp2350/
-[link-w6100]: https://docs.wiznet.io/Product/iEthernet/W6100/overview
-[link-w6100-evb-pico]: https://docs.wiznet.io/Product/iEthernet/W6100/w6100-evb-pico
-[link-w6100-evb-pico_main]: https://github.com/Wiznet/RP2040-v6-HAT-C/blob/main/static/images/w6100-evb-pico_main.png
-[link-w6100-evb-pico2]: https://docs.wiznet.io/Product/iEthernet/W6100/w6100-evb-pico2
-[link-w6100-evb-pico2_main]: https://docs.wiznet.io/assets/images/w6100-evb-pico2-docs-0d662aa52a0089de8d06d14d756c1e12.png
-[link-getting_started]: https://github.com/WIZnet-ioNIC/WIZnet-PICO-v6-C/blob/main/static/documents/getting_started.md
